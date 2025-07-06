@@ -1,0 +1,89 @@
+﻿<Window x:Class="EurotorgTestTask.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:local="clr-namespace:EurotorgTestTask"
+        mc:Ignorable="d"
+        Title="Курсы валют НБРБ"
+        Height="700" 
+        Width="500" 
+        Background="DarkSalmon">
+
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Row="0">
+            <telerik:RadDateRangePicker
+                StartDate="{Binding StartDate, Mode=TwoWay}"
+                EndDate="{Binding EndDate, Mode=TwoWay}"
+                DatePattern="dd.MM.yyyy"
+                Margin="10" />
+
+            <telerik:RadButton
+                Content="Получить курсы валют за период"
+                Command="{Binding GetRatesCommand}"
+                Margin="10" />
+
+            <telerik:RadButton
+                Content="Сохранить курсы валют в json"
+                Command="{Binding SaveToJsonCommand}"
+                Margin="10" />
+
+            <telerik:RadButton
+                Content="Открыть курсы валют из json"
+                Command="{Binding OpenFromJsonCommand}"
+                Margin="10" />
+
+            <TextBox
+                Text="{Binding JsonFilePath}"
+                IsReadOnly="True"
+                Margin="10" />
+
+            <TextBlock
+                Margin="10"
+                Text="{Binding ErrorMessage}"
+                Foreground="Red" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <telerik:RadGridView
+                ItemsSource="{Binding CurrencyRates}"
+                AutoGenerateColumns="False"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+
+                <telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn
+                        Header="Date"
+                        DataMemberBinding="{Binding Date}"
+                        IsReadOnly="True"
+                        DataFormatString="dd.MM.yyyy" />
+
+                    <telerik:GridViewDataColumn
+                        Header="Abbreviation"
+                        DataMemberBinding="{Binding Abbreviation}"
+                        IsReadOnly="False" />
+
+                    <telerik:GridViewDataColumn
+                        Header="Name"
+                        DataMemberBinding="{Binding Name}"
+                        IsReadOnly="True" />
+
+                    <telerik:GridViewDataColumn
+                        Header="OfficialRate"
+                        DataMemberBinding="{Binding OfficialRate}"
+                        IsReadOnly="False" />
+                </telerik:RadGridView.Columns>
+            </telerik:RadGridView>
+        </Grid>
+    </Grid>
+</Window>
